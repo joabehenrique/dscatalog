@@ -1,0 +1,4 @@
+INSERT INTO TB_CATEGORY (name) VALUES ('Eletrodoméstico')
+INSERT INTO TB_CATEGORY (name) VALUES ('Móveis')
+INSERT INTO TB_CATEGORY (name) VALUES ('Material Escolar')
+INSERT INTO TB_CATEGORY (name) VALUES ('Livros')
