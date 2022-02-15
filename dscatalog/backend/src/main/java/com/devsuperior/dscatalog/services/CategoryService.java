@@ -30,4 +30,12 @@ public class CategoryService {
         Category entity = objeto.orElseThrow(() -> new EntityNotFoundException("Category ID not found"));
         return new CategoryDTO(entity);
     }
+
+    @Transactional
+    public CategoryDTO insert(CategoryDTO category){
+        Category entity = new Category();
+        entity.setName(category.getName());
+        entity = repository.save(entity);
+        return new CategoryDTO(entity);
+    }
 }
