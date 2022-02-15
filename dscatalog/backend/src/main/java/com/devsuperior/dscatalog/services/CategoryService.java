@@ -2,12 +2,13 @@ package com.devsuperior.dscatalog.services;
 
 import com.devsuperior.dscatalog.dto.CategoryDTO;
 import com.devsuperior.dscatalog.entities.Category;
-import com.devsuperior.dscatalog.exceptions.EntityNotFoundException;
+import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 import com.devsuperior.dscatalog.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,13 +22,13 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public List<CategoryDTO> findAll(){
         List<Category> list = repository.findAll();
-        return list.stream().map(value -> new CategoryDTO(value)).collect(Collectors.toList());
+        return list.stream().map(CategoryDTO::new).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public CategoryDTO findById(Long id){
         Optional<Category> objeto = repository.findById(id);
-        Category entity = objeto.orElseThrow(() -> new EntityNotFoundException("Category ID not found"));
+        Category entity = objeto.orElseThrow(() -> new ResourceNotFoundException("Category ID not found"));
         return new CategoryDTO(entity);
     }
 
@@ -37,5 +38,17 @@ public class CategoryService {
         entity.setName(category.getName());
         entity = repository.save(entity);
         return new CategoryDTO(entity);
+    }
+
+    @Transactional
+    public CategoryDTO update(Long id, CategoryDTO category) {
+        try{
+            Category entity = repository.getById(id);
+            entity.setName(category.getName());
+            entity = repository.save(entity);
+            return new CategoryDTO(entity);
+        }catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Id not found: "+id);
+        }
     }
 }
