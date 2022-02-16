@@ -3,10 +3,13 @@ package com.devsuperior.dscatalog.dto;
 import com.devsuperior.dscatalog.entities.Category;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 public class CategoryDTO implements Serializable {
     private String name;
     private Long id;
+    private Instant createAt;
+    private Instant updateAt;
 
     public CategoryDTO() {
     }
@@ -19,6 +22,8 @@ public class CategoryDTO implements Serializable {
     public CategoryDTO(Category entity) {
         this.name = entity.getName();
         this.id = entity.getId();
+        this.createAt = entity.getCreateAt();
+        this.updateAt = entity.getUpdateAt();
     }
 
     public String getName() {
@@ -35,5 +40,13 @@ public class CategoryDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Instant getCreateAt() {
+        return createAt;
+    }
+
+    public Instant getUpdateAt() {
+        return updateAt;
     }
 }
